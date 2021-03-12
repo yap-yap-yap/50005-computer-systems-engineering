@@ -255,7 +255,53 @@ int shellExecuteInput(char **args)
   // 5. For the parent process, wait for the child process to complete and fetch the child's return value.
   // 6. Return the child's return value to the caller of shellExecuteInput
   // 7. If args[0] is not in builtin_command, print out an error message to tell the user that command doesn't exist and return 1
+  
+  // 1. check if arg is NULL
+  if(args[0] == NULL){
+    return 1;
+  }
+  // 2-3. fork if they aren't the first 4 commands
+  if(strcmp(args[0],"display") == 0 || 
+     strcmp(args[0],"countline") == 0 || 
+     strcmp(args[0],"listdir") == 0 || 
+     strcmp(args[0],"listdirall") == 0 || 
+     strcmp(args[0],"find") == 0 || 
+     strcmp(args[0],"summond") == 0 || 
+     strcmp(args[0],"checkdaemon") == 0)
+  {
+    // drbug printf("i forked\n");
+    pid_t pid;
+    int status;
 
+    pid = fork();
+
+    if(pid < 0){
+      printf("fork failed. exiting...\n");
+      return 1;
+    }
+    // 5-6. parent waits for child, returns exit status
+    else if(pid > 0){
+      waitpid(pid, &status, WUNTRACED);
+      return WEXITSTATUS(status);
+    }
+    
+  }
+
+  // 4. child executes function
+  int i = 0;
+  int numOfFunc = numOfBuiltinFunctions();
+  while(i < numOfFunc){
+    if(strcmp(builtin_commands[i], args[0]) == 0){
+      builtin_commandFunc[i](args);
+      exit(1);
+    }
+    //debug printf("wrong command %d\n", i);
+    i++;
+  } 
+  //debug printf("i reached here\n");
+
+  // 7. if args[0] isn't a built in command then quit out
+  printf("Invalid command\n");
   return 1;
 }
 
@@ -270,9 +316,23 @@ char *shellReadLine(void)
   // 1. Allocate a memory space to contain the string of input from stdin using malloc. Malloc should return a char* that persists even after this function terminates.
   // 2. Check that the char* returned by malloc is not NULL
   // 3. Fetch an entire line from input stream stdin using getline() function. getline() will store user input onto the memory location allocated in (1)
-  // 4. Return the char*
+  // 4. Return the char* 
 
-  return NULL;
+  // 1. malloc a space to get input in 
+  size_t line_buffer_size = 64;
+  char *line_buffer = malloc(line_buffer_size);
+
+  // 2. check that malloc is successful, if not: keep doing it until it works. maybe this would kill the system if there is no space left to malloc idk
+  if(line_buffer == NULL){
+    return NULL;
+  }
+
+  // 3. put the input line into line_buffer
+  getline(&line_buffer, &line_buffer_size, stdin);
+
+  // 4. return the input line. idk when to free the malloc lol
+  return line_buffer;
+
 }
 
 /**
@@ -281,14 +341,38 @@ char *shellReadLine(void)
 
 char **shellTokenizeInput(char *line)
 {
-
+  
   /** TASK 2 **/
   // 1. Allocate a memory space to contain pointers (addresses) to the first character of each word in *line. Malloc should return char** that persists after the function terminates.
   // 2. Check that char ** that is returend by malloc is not NULL
   // 3. Tokenize the *line using strtok() function
   // 4. Return the char **
 
-  return NULL;
+  // 1. malloc the space for token pointers 
+  
+  size_t token_pointer_size = sizeof(char *)*8;
+  char **token_pointers = malloc(token_pointer_size);
+  char *token_delim = SHELL_INPUT_DELIM;
+
+  // 2. check that it is not NULL
+  if(token_pointers == NULL){
+    return NULL;
+  }
+  //debug printf("i made it here :D\n");
+
+  // 3. tokenizzzzze
+  
+  char *token = strtok(line, token_delim);
+  int index = 0;
+
+  while(token != NULL){
+    token_pointers[index] = token;
+    //debug printf("%s\n",token);
+    token = strtok(NULL, token_delim);
+    index++;
+  }
+
+  return token_pointers;
 }
 
 /**
@@ -319,7 +403,8 @@ void shellLoop(void)
 
 }
 
-int main(int argc, char **argv)
+// original main 
+/*int main(int argc, char **argv)
 {
 
   printf("Shell Run successful. Running now: \n");
@@ -328,4 +413,53 @@ int main(int argc, char **argv)
   shellLoop();
 
   return 0;
+}*/
+
+// task 1 main
+/*int main(int argc, char **argv)
+{
+ 
+ printf("Shell Run successful. Running now: \n");
+ 
+ char* line = shellReadLine();
+ printf("The fetched line is : %s \n", line);
+ 
+ return 0;
+}*/
+
+// task 2 main
+/*int main(int argc, char **argv)
+{
+ 
+ printf("Shell Run successful. Running now: \n");
+ 
+ char* line = shellReadLine();
+ printf("The fetched line is : %s \n", line);
+
+ char** args = shellTokenizeInput(line);
+ printf("The first token is %s \n", args[0]);
+ printf("The second token is %s \n", args[1]);
+ 
+ return 0;
+}*/
+
+// task 3 main
+int main(int argc, char **argv)
+{
+ 
+ printf("Shell Run successful. Running now: \n");
+ 
+ char* line = shellReadLine();
+ printf("The fetched line is : %s \n", line);
+ 
+ char** args = shellTokenizeInput(line);
+ printf("The first token is %s \n", args[0]);
+ printf("The second token is %s \n", args[1]);
+ 
+ shellExecuteInput(args);
+ 
+ return 0;
 }
+
+
+
