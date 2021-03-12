@@ -15,7 +15,30 @@ int shellFind(char **args)
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellFind if execvp fails to allow loop to continue
 
-  return 1;
+  // 1. putting together the path for executing the file
+  
+  // this version does a malloc which is bad since a successful function execution doesn't return so it can't be freed
+  // size_t line_buffer_size = SHELL_BUFFERSIZE;
+  // char *current_dir_buffer = malloc(line_buffer_size);
+  // char *current_dir = getcwd(current_dir_buffer, line_buffer_size);
+  
+  char current_dir[SHELL_BUFFERSIZE] = "";
+  getcwd(current_dir, SHELL_BUFFERSIZE);
+
+  char *program_dir = "/shellPrograms/find";
+  strcat(current_dir, program_dir);
+
+  //debug printf("%s\n", current_dir);
+  
+  // 2-5. checks if it failed, prints out error and returns 1 
+  int execute = execvp(current_dir, args);
+  if (execute == -1){
+    perror("CSEShell");
+    return 1;
+  } 
+
+  //free(current_dir_buffer);
+
 }
 
 /**
@@ -32,7 +55,19 @@ int shellDisplayFile(char **args)
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellDisplayFile if execvp fails to allow loop to continue
 
-  return 1;
+  char current_dir[SHELL_BUFFERSIZE] = "";
+  getcwd(current_dir, SHELL_BUFFERSIZE);
+
+  char *program_dir = "/shellPrograms/display";
+  strcat(current_dir, program_dir);
+
+  //debug printf("%s\n", current_dir);
+  
+  int execute = execvp(current_dir, args);
+  if (execute == -1){
+    perror("CSEShell");
+    return 1;
+  }
 }
 
 /*
@@ -50,7 +85,19 @@ int shellListDirAll(char **args)
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellListDirAll if execvp fails to allow loop to continue
 
-  return 1;
+  char current_dir[SHELL_BUFFERSIZE] = "";
+  getcwd(current_dir, SHELL_BUFFERSIZE);
+
+  char *program_dir = "/shellPrograms/listdirall";
+  strcat(current_dir, program_dir);
+
+  //debug printf("%s\n", current_dir);
+  
+  int execute = execvp(current_dir, args);
+  if (execute == -1){
+    perror("CSEShell");
+    return 1;
+  }
 }
 
 /*
@@ -67,7 +114,19 @@ int shellListDir(char **args)
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellListDir
 
-  return 1;
+  char current_dir[SHELL_BUFFERSIZE] = "";
+  getcwd(current_dir, SHELL_BUFFERSIZE);
+
+  char *program_dir = "/shellPrograms/listdir";
+  strcat(current_dir, program_dir);
+
+  //debug printf("%s\n", current_dir);
+  
+  int execute = execvp(current_dir, args);
+  if (execute == -1){
+    perror("CSEShell");
+    return 1;
+  }
 }
 
 /**
@@ -85,7 +144,19 @@ int shellCountLine(char **args)
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellCountLine if execvp fails to allow loop to continue
 
-  return 1;
+  char current_dir[SHELL_BUFFERSIZE] = "";
+  getcwd(current_dir, SHELL_BUFFERSIZE);
+
+  char *program_dir = "/shellPrograms/countline";
+  strcat(current_dir, program_dir);
+
+  //debug printf("%s\n", current_dir);
+  
+  int execute = execvp(current_dir, args);
+  if (execute == -1){
+    perror("CSEShell");
+    return 1;
+  }
 }
 
 /**
@@ -101,8 +172,20 @@ int shellSummond(char **args)
   // 3. A successful execvp never returns, while a failed execvp returns -1
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellDaemonize if execvp fails to allow loop to continue
+  
+  char current_dir[SHELL_BUFFERSIZE] = "";
+  getcwd(current_dir, SHELL_BUFFERSIZE);
 
-  return 1;
+  char *program_dir = "/shellPrograms/summond";
+  strcat(current_dir, program_dir);
+
+  //debug printf("%s\n", current_dir);
+  
+  int execute = execvp(current_dir, args);
+  if (execute == -1){
+    perror("CSEShell");
+    return 1;
+  }
 }
 
 
@@ -121,7 +204,19 @@ int shellCheckDaemon(char **args)
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellCheckDaemon if execvp fails to allow loop to continue
 
-  return 1;
+  char current_dir[SHELL_BUFFERSIZE] = "";
+  getcwd(current_dir, SHELL_BUFFERSIZE);
+
+  char *program_dir = "/shellPrograms/checkdaemon";
+  strcat(current_dir, program_dir);
+
+  //debug printf("%s\n", current_dir);
+  
+  int execute = execvp(current_dir, args);
+  if (execute == -1){
+    perror("CSEShell");
+    return 1;
+  }
 }
 
 /**
