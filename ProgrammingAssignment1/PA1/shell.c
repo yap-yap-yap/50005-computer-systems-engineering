@@ -269,7 +269,7 @@ int shellExecuteInput(char **args)
      strcmp(args[0],"summond") == 0 || 
      strcmp(args[0],"checkdaemon") == 0)
   {
-    // drbug printf("i forked\n");
+    //debug printf("i forked\n");
     pid_t pid;
     int status;
 
