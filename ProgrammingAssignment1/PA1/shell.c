@@ -1,4 +1,6 @@
 #include "shell.h"
+// change this to your path
+char *base_dir = "/home/zhihan/Desktop/50005-computer-systems-engineering/ProgrammingAssignment1/PA1";
 
 /*
  List all files matching the name in args[1] under current directory and subdirectories
@@ -23,13 +25,17 @@ int shellFind(char **args)
   // char *current_dir_buffer = malloc(line_buffer_size);
   // char *current_dir = getcwd(current_dir_buffer, line_buffer_size);
   
-  char current_dir[SHELL_BUFFERSIZE] = "";
-  getcwd(current_dir, SHELL_BUFFERSIZE);
+  //char current_dir[SHELL_BUFFERSIZE] = "";
+  //getcwd(current_dir, SHELL_BUFFERSIZE);
 
+  char *current_dir = base_dir;
+  printf("%s\n", current_dir);
+  printf("i got here\n");
+  
   char *program_dir = "/shellPrograms/find";
   strcat(current_dir, program_dir);
 
-  //debug printf("%s\n", current_dir);
+  printf("%s\n", current_dir);
   
   // 2-5. checks if it failed, prints out error and returns 1 
   int execute = execvp(current_dir, args);
@@ -56,9 +62,9 @@ int shellDisplayFile(char **args)
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellDisplayFile if execvp fails to allow loop to continue
 
-  char current_dir[SHELL_BUFFERSIZE] = "";
-  getcwd(current_dir, SHELL_BUFFERSIZE);
-
+  char *current_dir = base_dir;
+  //debug printf("%s\n", current_dir);
+  
   char *program_dir = "/shellPrograms/display";
   strcat(current_dir, program_dir);
 
@@ -68,7 +74,7 @@ int shellDisplayFile(char **args)
   if (execute == -1){
     perror("CSEShell");
     return 1;
-  }
+  } 
 }
 
 /*
@@ -86,19 +92,19 @@ int shellListDirAll(char **args)
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellListDirAll if execvp fails to allow loop to continue
 
-  char current_dir[SHELL_BUFFERSIZE] = "";
-  getcwd(current_dir, SHELL_BUFFERSIZE);
-
+  char *current_dir = base_dir;
+  printf("%s\n", current_dir);
+  
   char *program_dir = "/shellPrograms/listdirall";
   strcat(current_dir, program_dir);
 
-  //debug printf("%s\n", current_dir);
+  printf("%s\n", current_dir);
   
   int execute = execvp(current_dir, args);
   if (execute == -1){
     perror("CSEShell");
     return 1;
-  }
+  } 
 }
 
 /*
@@ -115,9 +121,9 @@ int shellListDir(char **args)
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellListDir
 
-  char current_dir[SHELL_BUFFERSIZE] = "";
-  getcwd(current_dir, SHELL_BUFFERSIZE);
-
+  char *current_dir = base_dir;
+  //debug printf("%s\n", current_dir);
+  
   char *program_dir = "/shellPrograms/listdir";
   strcat(current_dir, program_dir);
 
@@ -127,7 +133,7 @@ int shellListDir(char **args)
   if (execute == -1){
     perror("CSEShell");
     return 1;
-  }
+  } 
 }
 
 /**
@@ -145,9 +151,9 @@ int shellCountLine(char **args)
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellCountLine if execvp fails to allow loop to continue
 
-  char current_dir[SHELL_BUFFERSIZE] = "";
-  getcwd(current_dir, SHELL_BUFFERSIZE);
-
+  char *current_dir = base_dir;
+  //debug printf("%s\n", current_dir);
+  
   char *program_dir = "/shellPrograms/countline";
   strcat(current_dir, program_dir);
 
@@ -157,7 +163,7 @@ int shellCountLine(char **args)
   if (execute == -1){
     perror("CSEShell");
     return 1;
-  }
+  } 
 }
 
 /**
@@ -174,9 +180,9 @@ int shellSummond(char **args)
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellDaemonize if execvp fails to allow loop to continue
   
-  char current_dir[SHELL_BUFFERSIZE] = "";
-  getcwd(current_dir, SHELL_BUFFERSIZE);
-
+  char *current_dir = base_dir;
+  //debug printf("%s\n", current_dir);
+  
   char *program_dir = "/shellPrograms/summond";
   strcat(current_dir, program_dir);
 
@@ -186,7 +192,7 @@ int shellSummond(char **args)
   if (execute == -1){
     perror("CSEShell");
     return 1;
-  }
+  } 
 }
 
 
@@ -205,9 +211,9 @@ int shellCheckDaemon(char **args)
   // 4. Print some kind of error message if it returns -1
   // 5. return 1 to the caller of shellCheckDaemon if execvp fails to allow loop to continue
 
-  char current_dir[SHELL_BUFFERSIZE] = "";
-  getcwd(current_dir, SHELL_BUFFERSIZE);
-
+  char *current_dir = base_dir;
+  //debug printf("%s\n", current_dir);
+  
   char *program_dir = "/shellPrograms/checkdaemon";
   strcat(current_dir, program_dir);
 
@@ -217,7 +223,7 @@ int shellCheckDaemon(char **args)
   if (execute == -1){
     perror("CSEShell");
     return 1;
-  }
+  } 
 }
 
 /**
@@ -365,7 +371,7 @@ int shellExecuteInput(char **args)
      strcmp(args[0],"summond") == 0 || 
      strcmp(args[0],"checkdaemon") == 0)
   {
-    printf("i forked\n");
+    //debug printf("i forked\n");
     pid_t pid;
     int status;
 
@@ -498,6 +504,13 @@ void shellLoop(void)
   char **args; // to tokenize them as arguments separated by spaces
   int status;  // to tell the shell program whether to terminate shell or not
 
+  // for setting up program path
+  //char *temp_dir = getcwd(temp_dir, SHELL_BUFFERSIZE);
+  //strcat(base_dir, temp_dir);
+  //printf("%s\n",base_dir);
+
+  // for looping
+  //int loop_terminated = 0;
 
   /** TASK 5 **/
   //write a loop where you do the following: 
@@ -512,28 +525,29 @@ void shellLoop(void)
   // 7. free memory location containing char* to the first letter of each word in the input string
   // 8. check if shellExecuteInput returns 1. If yes, loop back to Step 1 and prompt user with new input. Otherwise, exit the shell. 
 
-  while(1){
-    // 1. print message prompt
-    printf("CSEShell> ");
+  
+  // 1. print message prompt
+  printf("CSEShell> ");
 
-    // 3. run shellReadLine(), store output
-    line = shellReadLine();
+  // 3. run shellReadLine(), store output
+  line = shellReadLine();
 
-    // 4. run shellTokenizeInput(line), store output
-    args = shellTokenizeInput(line);
+  // 4. run shellTokenizeInput(line), store output
+  args = shellTokenizeInput(line);
 
-    status = shellExecuteInput(args);
+  status = shellExecuteInput(args);
 
-    // 5-6. free memory
-    free(line);
-    free(args);
+  // 5-6. free memory
+  free(line);
+  free(args);
 
-    // 7. loop if status == 1
-    if(status != 1){
-      break;
-    }
+  // 7. loop if status == 1
+  if(status == 1){
+    shellLoop();
   }
-  return;
+  
+  
+  
 }
 
 // original main 
