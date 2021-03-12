@@ -1,5 +1,7 @@
 #include "shell.h"
 
+// change this to your path on your machine
+char *base_dir = "/home/zhihan/Desktop/50005-computer-systems-engineering/ProgrammingAssignment1/PA1";
 /*
  List all files matching the name in args[1] under current directory and subdirectories
 */
@@ -24,7 +26,7 @@ int shellFind(char **args)
   // char *current_dir = getcwd(current_dir_buffer, line_buffer_size);
   
   char current_dir[SHELL_BUFFERSIZE] = "";
-  getcwd(current_dir, SHELL_BUFFERSIZE);
+  sprintf(current_dir, "%s", base_dir);
 
   char *program_dir = "/shellPrograms/find";
   strcat(current_dir, program_dir);
@@ -57,7 +59,7 @@ int shellDisplayFile(char **args)
   // 5. return 1 to the caller of shellDisplayFile if execvp fails to allow loop to continue
 
   char current_dir[SHELL_BUFFERSIZE] = "";
-  getcwd(current_dir, SHELL_BUFFERSIZE);
+  sprintf(current_dir, "%s", base_dir);
 
   char *program_dir = "/shellPrograms/display";
   strcat(current_dir, program_dir);
@@ -68,12 +70,15 @@ int shellDisplayFile(char **args)
   if (execute == -1){
     perror("CSEShell");
     return 1;
-  }
+  } 
 }
 
 /*
 	List the items in the directory and subdirectory
 */
+
+// listdirall is buggy for some reason and will fail to parse the args properly if some functions are run before listdirall.
+// i do not know how to solve it at all 
 int shellListDirAll(char **args)
 {
 
@@ -87,7 +92,7 @@ int shellListDirAll(char **args)
   // 5. return 1 to the caller of shellListDirAll if execvp fails to allow loop to continue
 
   char current_dir[SHELL_BUFFERSIZE] = "";
-  getcwd(current_dir, SHELL_BUFFERSIZE);
+  sprintf(current_dir, "%s", base_dir);
 
   char *program_dir = "/shellPrograms/listdirall";
   strcat(current_dir, program_dir);
@@ -98,7 +103,7 @@ int shellListDirAll(char **args)
   if (execute == -1){
     perror("CSEShell");
     return 1;
-  }
+  } 
 }
 
 /*
@@ -116,7 +121,7 @@ int shellListDir(char **args)
   // 5. return 1 to the caller of shellListDir
 
   char current_dir[SHELL_BUFFERSIZE] = "";
-  getcwd(current_dir, SHELL_BUFFERSIZE);
+  sprintf(current_dir, "%s", base_dir);
 
   char *program_dir = "/shellPrograms/listdir";
   strcat(current_dir, program_dir);
@@ -127,7 +132,7 @@ int shellListDir(char **args)
   if (execute == -1){
     perror("CSEShell");
     return 1;
-  }
+  } 
 }
 
 /**
@@ -146,7 +151,7 @@ int shellCountLine(char **args)
   // 5. return 1 to the caller of shellCountLine if execvp fails to allow loop to continue
 
   char current_dir[SHELL_BUFFERSIZE] = "";
-  getcwd(current_dir, SHELL_BUFFERSIZE);
+  sprintf(current_dir, "%s", base_dir);
 
   char *program_dir = "/shellPrograms/countline";
   strcat(current_dir, program_dir);
@@ -157,7 +162,7 @@ int shellCountLine(char **args)
   if (execute == -1){
     perror("CSEShell");
     return 1;
-  }
+  } 
 }
 
 /**
@@ -175,7 +180,7 @@ int shellSummond(char **args)
   // 5. return 1 to the caller of shellDaemonize if execvp fails to allow loop to continue
   
   char current_dir[SHELL_BUFFERSIZE] = "";
-  getcwd(current_dir, SHELL_BUFFERSIZE);
+  sprintf(current_dir, "%s", base_dir);
 
   char *program_dir = "/shellPrograms/summond";
   strcat(current_dir, program_dir);
@@ -186,7 +191,7 @@ int shellSummond(char **args)
   if (execute == -1){
     perror("CSEShell");
     return 1;
-  }
+  } 
 }
 
 
@@ -206,7 +211,7 @@ int shellCheckDaemon(char **args)
   // 5. return 1 to the caller of shellCheckDaemon if execvp fails to allow loop to continue
 
   char current_dir[SHELL_BUFFERSIZE] = "";
-  getcwd(current_dir, SHELL_BUFFERSIZE);
+  sprintf(current_dir, "%s", base_dir);
 
   char *program_dir = "/shellPrograms/checkdaemon";
   strcat(current_dir, program_dir);
@@ -217,7 +222,7 @@ int shellCheckDaemon(char **args)
   if (execute == -1){
     perror("CSEShell");
     return 1;
-  }
+  } 
 }
 
 /**
@@ -365,7 +370,7 @@ int shellExecuteInput(char **args)
      strcmp(args[0],"summond") == 0 || 
      strcmp(args[0],"checkdaemon") == 0)
   {
-    printf("i forked\n");
+    //debug printf("i forked\n");
     pid_t pid;
     int status;
 
