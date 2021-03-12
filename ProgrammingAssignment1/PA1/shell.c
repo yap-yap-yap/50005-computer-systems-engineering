@@ -18,6 +18,7 @@ int shellFind(char **args)
   // 1. putting together the path for executing the file
   
   // this version does a malloc which is bad since a successful function execution doesn't return so it can't be freed
+  // also it doesn't work if you ever cd away from the directory that the shell is in
   // size_t line_buffer_size = SHELL_BUFFERSIZE;
   // char *current_dir_buffer = malloc(line_buffer_size);
   // char *current_dir = getcwd(current_dir_buffer, line_buffer_size);
@@ -364,7 +365,7 @@ int shellExecuteInput(char **args)
      strcmp(args[0],"summond") == 0 || 
      strcmp(args[0],"checkdaemon") == 0)
   {
-    //debug printf("i forked\n");
+    printf("i forked\n");
     pid_t pid;
     int status;
 
@@ -387,8 +388,24 @@ int shellExecuteInput(char **args)
   int numOfFunc = numOfBuiltinFunctions();
   while(i < numOfFunc){
     if(strcmp(builtin_commands[i], args[0]) == 0){
-      builtin_commandFunc[i](args);
-      exit(1);
+      //checks if it is a forked or non forked function
+      if(i < 3){
+        //debug printf("executing command: %s\n", builtin_commands[i]);
+        return builtin_commandFunc[i](args);
+      }
+      else if(i >= 4){
+        //debug printf("executing command: %s\n", builtin_commands[i]);
+        builtin_commandFunc[i](args);
+        exit(1);
+      }
+      // handling error before it is passed into shellUsage because the function is buggy
+      else if(i == 3){
+        if(args[1] == NULL){
+          printf("Type: usage command\n");
+          return 1;
+        }
+        return builtin_commandFunc[i](args);
+      }
     }
     //debug printf("wrong command %d\n", i);
     i++;
@@ -486,7 +503,7 @@ void shellLoop(void)
   //write a loop where you do the following: 
 
   // 1. print the message prompt
-  // 2. clear the buffer and move the output to the console using fflush
+  // 2. clear the buffer and move the output to the console using fflush // not needed for 2021 edition
   // 3. invoke shellReadLine() and store the output at line
   // 4. invoke shellTokenizeInput(line) and store the output at args**
   // 5. execute the tokens using shellExecuteInput(args)
@@ -495,11 +512,32 @@ void shellLoop(void)
   // 7. free memory location containing char* to the first letter of each word in the input string
   // 8. check if shellExecuteInput returns 1. If yes, loop back to Step 1 and prompt user with new input. Otherwise, exit the shell. 
 
+  while(1){
+    // 1. print message prompt
+    printf("CSEShell> ");
 
+    // 3. run shellReadLine(), store output
+    line = shellReadLine();
+
+    // 4. run shellTokenizeInput(line), store output
+    args = shellTokenizeInput(line);
+
+    status = shellExecuteInput(args);
+
+    // 5-6. free memory
+    free(line);
+    free(args);
+
+    // 7. loop if status == 1
+    if(status != 1){
+      break;
+    }
+  }
+  return;
 }
 
 // original main 
-/*int main(int argc, char **argv)
+int main(int argc, char **argv)
 {
 
   printf("Shell Run successful. Running now: \n");
@@ -508,7 +546,7 @@ void shellLoop(void)
   shellLoop();
 
   return 0;
-}*/
+}
 
 // task 1 main
 /*int main(int argc, char **argv)
@@ -538,8 +576,8 @@ void shellLoop(void)
  return 0;
 }*/
 
-// task 3 main
-int main(int argc, char **argv)
+// task 3-4 main
+/*int main(int argc, char **argv)
 {
  
  printf("Shell Run successful. Running now: \n");
@@ -554,7 +592,7 @@ int main(int argc, char **argv)
  shellExecuteInput(args);
  
  return 0;
-}
+}*/
 
 
 
