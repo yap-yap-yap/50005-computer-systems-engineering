@@ -319,7 +319,7 @@ char *shellReadLine(void)
   // 4. Return the char* 
 
   // 1. malloc a space to get input in 
-  size_t line_buffer_size = 64;
+  size_t line_buffer_size = SHELL_BUFFERSIZE;
   char *line_buffer = malloc(line_buffer_size);
 
   // 2. check that malloc is successful, if not: keep doing it until it works. maybe this would kill the system if there is no space left to malloc idk
@@ -350,7 +350,7 @@ char **shellTokenizeInput(char *line)
 
   // 1. malloc the space for token pointers 
   
-  size_t token_pointer_size = sizeof(char *)*8;
+  size_t token_pointer_size = sizeof(char *)*SHELL_BUFFERSIZE;
   char **token_pointers = malloc(token_pointer_size);
   char *token_delim = SHELL_INPUT_DELIM;
 
