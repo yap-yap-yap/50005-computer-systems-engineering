@@ -7,7 +7,9 @@ int shellCheckDaemon_code()
    /* TASK 8 */
    //Create a command that trawl through output of ps -efj and contains "summond"
    char *command = malloc(sizeof(char) * 256);
-   sprintf(command, "ps -efj | grep summond  | grep -v tty > output.txt");
+
+   // there is no 'tty' in the output on my machine. i simply exclude 'grep' since among the processes containing 'summond', i want to exclude the one that has 'grep'. 
+   sprintf(command, "ps -efj | grep summond  | grep -v grep > output.txt");
 
    // TODO: Execute the command using system(command) and check its return value
    while(1){
@@ -46,10 +48,13 @@ int shellCheckDaemon_code()
    // 5. print your result
    printf("live daemon count: %d\n", live_daemons);
 
-   if (live_daemons == 0)
+   if (live_daemons == 0){
       printf("No daemon is alive right now\n");
-   else
-   {
+   }
+   else if(live_daemons == 1){
+      printf("There are in total of %d live daemon \n", live_daemons);
+   }
+   else{
       printf("There are in total of %d live daemons \n", live_daemons);
    }
 
