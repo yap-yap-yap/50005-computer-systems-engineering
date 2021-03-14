@@ -78,7 +78,7 @@ int shellDisplayFile(char **args)
 */
 
 // listdirall is buggy for some reason and will fail to parse the args properly if some functions are run before listdirall.
-// i do not know how to solve it at all 
+// i do not know whether it is necessary to solve it, it is not a problem with tokenizing
 int shellListDirAll(char **args)
 {
 
@@ -99,6 +99,12 @@ int shellListDirAll(char **args)
 
   //debug printf("%s\n", current_dir);
   
+  // catching the above error
+  if(args[1] != NULL){
+    printf("CSEShell: listdirall does not take additional arguments");
+    return 1;
+  }
+
   int execute = execvp(current_dir, args);
   if (execute == -1){
     perror("CSEShell");
@@ -109,6 +115,8 @@ int shellListDirAll(char **args)
 /*
 	List the items in the directory
 */
+// listdir is buggy for some reason and will fail to parse the args properly if some functions are run before listdirall.
+// i do not know how to or whether it is necessary to solve it, it is not a problem with tokenizing
 int shellListDir(char **args)
 {
   printf("shellListDir is called!\n");
