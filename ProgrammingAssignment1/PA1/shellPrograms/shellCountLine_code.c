@@ -29,7 +29,7 @@ int shellCountLine_code(char **args)
         // 4. Loop, as long as getline() does not return -1, keeps reading and increment the count
         while((nread = getline(&line, &len, fp)) != -1){
             count++;
-            // fwrite(line, nread, 1, stdout);
+            //debug fwrite(line, nread, 1, stdout);
         }
     }
     // handling no file error
