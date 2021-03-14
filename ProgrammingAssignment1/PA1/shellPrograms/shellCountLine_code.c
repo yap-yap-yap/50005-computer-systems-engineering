@@ -20,7 +20,7 @@ int shellCountLine_code(char **args)
     char *line = NULL;
     size_t len = 0;
     int count = 0;
-    printf("%s\n", args[1]);
+    printf("Checking %s...\n", args[1]);
     // 1. Given char** args, open file in READ mode based on the filename given in args[1] using fopen()
     FILE *fp = fopen(args[1], "r");
     // 2. Check if file exists by ensuring that the FILE* fp returned by fopen() is not NULL
@@ -32,6 +32,12 @@ int shellCountLine_code(char **args)
             // fwrite(line, nread, 1, stdout);
         }
     }
+    // handling no file error
+    if (fp == NULL){
+        perror("CSEShell");
+        exit(1);
+    }
+
     // 6. Close the FILE*
     fclose(fp);
 
