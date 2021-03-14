@@ -13,7 +13,7 @@
 #include "shellPrograms.h"
 
 //TODO: change to appropriate path
-char *path = "/Users/natalie_agus/Dropbox/50.005 Computer System Engineering/2020/PA1 Makeshell Daemon/PA1/logfile_test.txt";
+char *path = "/home/zhihan/Desktop/50005-computer-systems-engineering/ProgrammingAssignment1/PA1/logfile_test.txt";
 
 /*This function summons a daemon process out of the current process*/
 static int create_daemon()
@@ -42,6 +42,7 @@ static int create_daemon()
             break;
         case 0:
             // 3. On child process (this is intermediate process), call setsid() so that the child becomes session leader to lose the controlling TTY
+            //debug printf("intermediate forked\n");
             setsid();
             // 4. Ignore SIGCHLD, SIGHUP
             signal(SIGCHLD, SIG_IGN);
@@ -54,6 +55,7 @@ static int create_daemon()
                 break;
             } else if(pid2 == 0){
                 // 6. Child process (the daemon) set new file permissions using umask(0). Daemon's PPID at this point is 1 (the init)
+                //debug printf("daemon forked\n");
                 umask(0);
                 // 7. Change working directory to root
                 chdir("/");
@@ -62,16 +64,16 @@ static int create_daemon()
                     close(i);
                 }
                 int fd0 = open("/dev/null", O_RDWR);
-                int fd1 = dup(0);
-                int fd2 = dup(0);
+                int fd1 = open("/dev/null", O_RDWR);
+                int fd2 = open("/dev/null", O_RDWR);
             } else if (pid2 > 0){
                 exit(1);
             }
             break;
     // 2. Close parent with exit(1)
-    default:
-        exit(1);
-        break;
+        default:
+            exit(1);
+            break;
     }
 
     return 1;
@@ -98,6 +100,7 @@ static int daemon_work()
 
         //use appropriate location if you are using MacOS or Linux
         //TODO: Change to appropriate path
+        
         fptr = fopen(path, "a");
 
         if (fptr == NULL)
